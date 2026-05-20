@@ -6,7 +6,7 @@ export const openapiSpec = {
     description:
       "API dos Jogos de Integracao Academica - JOIA 2026 - Unilasalle Lucas do Rio Verde",
   },
-  servers: [{ url: "http://localhost:3334" }],
+  servers: [{ url: "/" }],
   components: {
     securitySchemes: {
       bearerAuth: { type: "http", scheme: "bearer", bearerFormat: "JWT" },
