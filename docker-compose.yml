@@ -1,0 +1,43 @@
+services:
+  joia-db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-joia}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-joia2026}
+      POSTGRES_DB: ${POSTGRES_DB:-joia_2026}
+    volumes:
+      - joia_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-joia} -d ${POSTGRES_DB:-joia_2026}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  joia-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      joia-db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-joia}:${POSTGRES_PASSWORD:-joia2026}@joia-db:5432/${POSTGRES_DB:-joia_2026}?schema=public
+      PORT: 3334
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
+      NODE_ENV: production
+    expose:
+      - "3334"
+    ports:
+      - "${API_PORT:-3334}:3334"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3334/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+volumes:
+  joia_pgdata:

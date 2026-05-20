@@ -1,0 +1,207 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1779235568934,
+  "projectRoot": "C:\\Users\\dheyv.PC-DHEYVID\\Documents\\GitHub\\joia-2026",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      },
+      {
+        "name": "TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "tsconfig.json"
+        ]
+      }
+    ],
+    "frameworks": [
+      {
+        "name": "express",
+        "version": "4.21.1",
+        "category": "backend"
+      }
+    ],
+    "packageManager": "npm",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": "npm run build",
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": "npm run dev",
+    "scripts": {
+      "dev": "tsx watch src/server.ts",
+      "build": "tsc",
+      "start": "node dist/server.js",
+      "prisma:generate": "prisma generate",
+      "prisma:migrate": "prisma migrate dev",
+      "prisma:deploy": "prisma migrate deploy",
+      "prisma:studio": "prisma studio",
+      "db:seed": "tsx prisma/seed.ts",
+      "db:populate": "tsx scripts/populate.ts"
+    }
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": "ES modules",
+    "testPattern": null,
+    "fileOrganization": "type-based"
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "scripts",
+      "src"
+    ],
+    "gitBranches": null
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "prisma": {
+      "path": "prisma",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1779235568905,
+      "keyFiles": [
+        "schema.prisma",
+        "seed.ts"
+      ]
+    },
+    "scripts": {
+      "path": "scripts",
+      "purpose": "Build/utility scripts",
+      "fileCount": 1,
+      "lastAccessed": 1779235568905,
+      "keyFiles": [
+        "populate.ts"
+      ]
+    },
+    "src": {
+      "path": "src",
+      "purpose": "Source code",
+      "fileCount": 3,
+      "lastAccessed": 1779235568906,
+      "keyFiles": [
+        "app.ts",
+        "env.ts",
+        "server.ts"
+      ]
+    },
+    "prisma\\migrations": {
+      "path": "prisma\\migrations",
+      "purpose": "Database migrations",
+      "fileCount": 1,
+      "lastAccessed": 1779235568914,
+      "keyFiles": [
+        "migration_lock.toml"
+      ]
+    },
+    "src\\controllers": {
+      "path": "src\\controllers",
+      "purpose": "Controllers",
+      "fileCount": 0,
+      "lastAccessed": 1779235568916,
+      "keyFiles": []
+    },
+    "src\\lib": {
+      "path": "src\\lib",
+      "purpose": "Library code",
+      "fileCount": 3,
+      "lastAccessed": 1779235568916,
+      "keyFiles": [
+        "jwt.ts",
+        "prisma.ts",
+        "swagger.ts"
+      ]
+    },
+    "src\\routes": {
+      "path": "src\\routes",
+      "purpose": "Route handlers",
+      "fileCount": 8,
+      "lastAccessed": 1779235568916,
+      "keyFiles": [
+        "auth.routes.ts",
+        "cursos.routes.ts",
+        "equipes.routes.ts"
+      ]
+    },
+    "src\\schemas": {
+      "path": "src\\schemas",
+      "purpose": "Schema definitions",
+      "fileCount": 0,
+      "lastAccessed": 1779235568917,
+      "keyFiles": []
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "docker-compose.yml",
+      "accessCount": 2,
+      "lastAccessed": 1779236012029,
+      "type": "file"
+    },
+    {
+      "path": ".env.example",
+      "accessCount": 2,
+      "lastAccessed": 1779236012438,
+      "type": "file"
+    },
+    {
+      "path": "package.json",
+      "accessCount": 1,
+      "lastAccessed": 1779235664707,
+      "type": "file"
+    },
+    {
+      "path": "tsconfig.json",
+      "accessCount": 1,
+      "lastAccessed": 1779235666809,
+      "type": "file"
+    },
+    {
+      "path": "README.md",
+      "accessCount": 1,
+      "lastAccessed": 1779235668281,
+      "type": "file"
+    },
+    {
+      "path": "src\\server.ts",
+      "accessCount": 1,
+      "lastAccessed": 1779235673623,
+      "type": "file"
+    },
+    {
+      "path": "src\\env.ts",
+      "accessCount": 1,
+      "lastAccessed": 1779235674210,
+      "type": "file"
+    },
+    {
+      "path": "src\\app.ts",
+      "accessCount": 1,
+      "lastAccessed": 1779235674864,
+      "type": "file"
+    },
+    {
+      "path": "Dockerfile",
+      "accessCount": 1,
+      "lastAccessed": 1779236011204,
+      "type": "file"
+    },
+    {
+      "path": ".dockerignore",
+      "accessCount": 1,
+      "lastAccessed": 1779236011616,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}

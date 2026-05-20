@@ -1,0 +1,178 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ATLETA
+  ADMIN
+}
+
+enum TipoModalidade {
+  COLETIVA
+  INDIVIDUAL
+}
+
+enum Genero {
+  MASCULINO
+  FEMININO
+  MISTO
+  LIVRE
+}
+
+enum StatusJogo {
+  AGENDADO
+  EM_ANDAMENTO
+  FINALIZADO
+  CANCELADO
+  ADIADO
+}
+
+enum FaseCampeonato {
+  CLASSIFICATORIA
+  OITAVAS
+  QUARTAS
+  SEMIFINAL
+  DISPUTA_TERCEIRO
+  FINAL
+}
+
+enum TipoCartao {
+  AMARELO
+  VERMELHO
+}
+
+model User {
+  id           String   @id @default(uuid())
+  nome         String
+  email        String   @unique
+  senhaHash    String
+  cpf          String?  @unique
+  telefone     String?
+  role         Role     @default(ATLETA)
+  cursoId      String?
+  curso        Curso?   @relation(fields: [cursoId], references: [id])
+  criadoEm     DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+
+  favoritos    Favorito[]
+  inscricoes   AtletaEquipe[]
+
+  @@index([cursoId])
+}
+
+model Curso {
+  id      String   @id @default(uuid())
+  nome    String   @unique
+  sigla   String?
+
+  users   User[]
+  equipes Equipe[]
+}
+
+model Modalidade {
+  id                 String         @id @default(uuid())
+  nome               String         @unique
+  tipo               TipoModalidade
+  descricao          String?
+  maxEquipesPorCurso Int?
+  maxAtletasPorCurso Int?
+
+  equipes Equipe[]
+  jogos   Jogo[]
+}
+
+model Equipe {
+  id           String     @id @default(uuid())
+  nome         String
+  genero       Genero     @default(LIVRE)
+  modalidadeId String
+  modalidade   Modalidade @relation(fields: [modalidadeId], references: [id])
+  cursoId      String
+  curso        Curso      @relation(fields: [cursoId], references: [id])
+  criadoEm     DateTime   @default(now())
+
+  atletas        AtletaEquipe[]
+  jogosMandante  Jogo[]    @relation("EquipeMandante")
+  jogosVisitante Jogo[]    @relation("EquipeVisitante")
+  cartoes        Cartao[]
+
+  @@unique([modalidadeId, cursoId, nome, genero])
+  @@index([cursoId])
+  @@index([modalidadeId])
+}
+
+model AtletaEquipe {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  equipeId  String
+  equipe    Equipe   @relation(fields: [equipeId], references: [id], onDelete: Cascade)
+  numero    Int?
+  capitao   Boolean  @default(false)
+  criadoEm  DateTime @default(now())
+
+  cartoes   Cartao[]
+
+  @@unique([userId, equipeId])
+}
+
+model Jogo {
+  id              String         @id @default(uuid())
+  modalidadeId    String
+  modalidade      Modalidade     @relation(fields: [modalidadeId], references: [id])
+  mandanteId      String
+  mandante        Equipe         @relation("EquipeMandante", fields: [mandanteId], references: [id])
+  visitanteId     String
+  visitante       Equipe         @relation("EquipeVisitante", fields: [visitanteId], references: [id])
+  placarMandante  Int            @default(0)
+  placarVisitante Int            @default(0)
+  status          StatusJogo     @default(AGENDADO)
+  fase            FaseCampeonato @default(CLASSIFICATORIA)
+  local           String?
+  iniciaEm        DateTime
+  iniciadoEm      DateTime?
+  finalizadoEm    DateTime?
+  observacoes     String?
+  criadoEm        DateTime       @default(now())
+  atualizadoEm    DateTime       @updatedAt
+
+  favoritos Favorito[]
+  cartoes   Cartao[]
+
+  @@index([modalidadeId])
+  @@index([status])
+  @@index([iniciaEm])
+}
+
+model Favorito {
+  id       String   @id @default(uuid())
+  userId   String
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  jogoId   String
+  jogo     Jogo     @relation(fields: [jogoId], references: [id], onDelete: Cascade)
+  criadoEm DateTime @default(now())
+
+  @@unique([userId, jogoId])
+}
+
+model Cartao {
+  id        String       @id @default(uuid())
+  tipo      TipoCartao
+  jogoId    String
+  jogo      Jogo         @relation(fields: [jogoId], references: [id], onDelete: Cascade)
+  atletaId  String
+  atleta    AtletaEquipe @relation(fields: [atletaId], references: [id], onDelete: Cascade)
+  equipeId  String
+  equipe    Equipe       @relation(fields: [equipeId], references: [id], onDelete: Cascade)
+  motivo    String?
+  pago      Boolean      @default(false)
+  criadoEm  DateTime     @default(now())
+
+  @@index([jogoId])
+  @@index([atletaId])
+}
